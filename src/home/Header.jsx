@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { FiMenu, FiX } from 'react-icons/fi';
 import Logo from '../assets/images/logo.png';
+import { Button, IconButton } from '../sharedComponents/buttons';
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -68,17 +69,17 @@ const Header = () => {
           </nav>
 
           {/* Mobile Menu Toggle */}
-          <button 
-            className="md:hidden text-2xl focus:outline-none z-20"
+          <IconButton 
+            className="md:hidden z-20"
             onClick={toggleMenu}
             aria-label="Toggle menu"
-          >
-            {isOpen ? (
-              <FiX className="text-primary" />
-            ) : (
-              <FiMenu className={isScrolled ? 'text-primary' : 'text-white'} />
-            )}
-          </button>
+            variant="text"
+            position="only"
+            icon={isOpen ? 
+              <FiX className="text-primary text-2xl" /> : 
+              <FiMenu className={`text-2xl ${isScrolled ? 'text-primary' : 'text-white'}`} />
+            }
+          />
 
           {/* Mobile Menu */}
           {isOpen && (
