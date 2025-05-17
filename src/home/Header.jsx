@@ -3,12 +3,27 @@ import { motion } from 'framer-motion';
 import { FiMenu, FiX } from 'react-icons/fi';
 import Logo from '../assets/images/logo.png';
 import { Button, IconButton } from '../sharedComponents/buttons';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isthisLandingPage, setIsthisLandingPage] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
+    if (location.pathname === '/') {
+      setIsthisLandingPage(true);
+      
+    } else {
+      setIsthisLandingPage(false);
+      setIsScrolled(true);//always true for other pages
+    }
+  }, [location.pathname]);
+
+  useEffect(() => {
+    if(isthisLandingPage){
     const handleScroll = () => {
       if (window.scrollY > 10) {
         setIsScrolled(true);
@@ -19,10 +34,19 @@ const Header = () => {
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }
+  }, [isthisLandingPage]);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
+  };
+
+  const handleLogin = () => {
+    navigate('/login');
+  };
+
+  const handleRegister = () => {
+    navigate('/login?mode=register');
   };
 
   const headerVariants = {
@@ -63,8 +87,8 @@ const Header = () => {
             <NavLink href="#categories" isScrolled={isScrolled}>Categories</NavLink>
             <NavLink href="#testimonials" isScrolled={isScrolled}>Testimonials</NavLink>
             <div className="ml-4 flex space-x-3">
-              <button className="btn-secondary !py-2 !px-4">Sign In</button>
-              <button className="btn-primary !py-2 !px-4">Register</button>
+              <button onClick={handleLogin} className="btn-secondary !py-2 !px-4">Sign In</button>
+              <button onClick={handleRegister} className="btn-primary !py-2 !px-4">Register</button>
             </div>
           </nav>
 
@@ -96,8 +120,8 @@ const Header = () => {
                 <MobileNavLink href="#categories" onClick={toggleMenu}>Categories</MobileNavLink>
                 <MobileNavLink href="#testimonials" onClick={toggleMenu}>Testimonials</MobileNavLink>
                 <div className="pt-6 flex flex-col space-y-3">
-                  <button className="btn-secondary w-full">Sign In</button>
-                  <button className="btn-primary w-full">Register</button>
+                  <button onClick={handleLogin} className="btn-secondary w-full">Sign In</button>
+                  <button onClick={handleRegister} className="btn-primary w-full">Register</button>
                 </div>
               </nav>
             </motion.div>
